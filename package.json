@@ -10,8 +10,10 @@
     "api": "node ./api/server.js"
   },
   "dependencies": {
+    "@primeuix/themes": "^1.0.0",
     "@vue/tsconfig": "^0.7.0",
     "fastify": "^5.2.1",
+    "primevue": "^4.3.2",
     "typescript": "^5.8.2",
     "vue": "^3.5.13",
     "vue-tsc": "^2.2.8"

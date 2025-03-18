@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Button from "primevue/button";
 defineProps<{
     name: string;
 }>();
@@ -14,6 +15,8 @@ defineProps<{
         <img src="/img/products/medium_booster.png" alt="Medium booster" />
         <img src="/img/products/small_coins.png" alt="Small coins" />
     </div>
+
+    <Button label="Click me"></Button>
 </template>
 
 <style scoped>
