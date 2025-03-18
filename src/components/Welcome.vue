@@ -16,7 +16,13 @@ defineProps<{
         <img src="/img/products/small_coins.png" alt="Small coins" />
     </div>
 
-    <Button label="Click me"></Button>
+    <Button label="Click me" />
+
+    <div
+        class="flex w-6/12 justify-center p-4 mx-auto border-blue-400 border-2"
+    >
+        <span class="text-amber-200">Tailwind class test</span>
+    </div>
 </template>
 
 <style scoped>
