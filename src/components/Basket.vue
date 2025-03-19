@@ -21,7 +21,7 @@ const basketCosts = computed<BasketCost[]>(() => [
 ]);
 </script>
 <template>
-    <div class="md:w-6/12 w-full flex-col md:px-16 bg-surface-900 h-full">
+    <div class="md:w-6/12 w-full h-full flex-col md:px-16 bg-surface-900">
         <!-- Logo: Desktop only -->
         <img
             src="/public/img/logo.svg"

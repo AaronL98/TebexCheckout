@@ -13,7 +13,7 @@ const nameOnCard = ref<string>("");
 </script>
 
 <template>
-    <div class="md:w-6/12 h-full px-4 md:px-16 space-y-2">
+    <div class="md:w-6/12 w-full h-full px-4 md:px-16 space-y-2">
         <!-- Logo: Mobile only -->
         <img
             src="/public/img/logo.svg"
