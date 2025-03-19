@@ -14,7 +14,7 @@
 
         <!-- FIXME: Positioning here is causing slightly scrolling x/y-->
         <div class="md:hidden fixed bottom-6 right-6">
-            <OverlayBadge value="2" severity="primary">
+            <OverlayBadge :value="basketQuantity" severity="primary">
                 <Button
                     @click="openBottomSheet"
                     size="large"
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Basket from "@/components/Basket.vue";
 import PaymentForm from "@/components/PaymentForm.vue";
 import Drawer from "primevue/drawer";
@@ -45,4 +45,16 @@ const openBottomSheet = () => {
 
 //The basket must be known in the payment form too, otherwise we could just hold this in the basket component
 const basket = ref<BasketInterface | null>();
+
+const basketQuantity = computed<number>(() => {
+    if (!basket.value) return 0;
+
+    let runningTotal = 0;
+
+    basket.value.products.forEach((product) => {
+        runningTotal += product.quantity;
+    });
+
+    return runningTotal;
+});
 </script>
