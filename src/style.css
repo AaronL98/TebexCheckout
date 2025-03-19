@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tailwindcss-primeui';
 
 :root {
   font-family: Lato;

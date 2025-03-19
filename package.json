@@ -14,10 +14,14 @@
     "@tailwindcss/vite": "^4.0.14",
     "@vue/tsconfig": "^0.7.0",
     "fastify": "^5.2.1",
+    "primeicons": "^7.0.0",
     "primevue": "^4.3.2",
     "tailwindcss": "^4.0.14",
+    "tailwindcss-primeui": "^0.5.1",
     "typescript": "^5.8.2",
+    "vite-plugin-vue-devtools": "^7.7.2",
     "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
     "vue-tsc": "^2.2.8"
   },
   "devDependencies": {
