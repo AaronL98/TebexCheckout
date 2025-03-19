@@ -100,7 +100,7 @@ const submitPayment = async ({ valid, values }) => {
             class="block md:invisible w-fit my-10"
             alt="logo"
         />
-        <div class="hidden md:block mb-4">
+        <div class="hidden md:block mb-4 text-xs">
             <span class="text-primary font-bold"> Make Payment </span>
             <span>> Order Confirmed</span>
         </div>
@@ -110,7 +110,7 @@ const submitPayment = async ({ valid, values }) => {
             @submit="submitPayment"
             :initialValues="initialValues"
             :resolver="resolver"
-            class="my-class"
+            class="my-class text-xs"
         >
             <!-- Email-->
             <div>

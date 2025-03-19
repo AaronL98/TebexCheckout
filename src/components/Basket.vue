@@ -89,7 +89,7 @@ const applyCoupon = async () => {
         <!-- Logo: Desktop only -->
         <img :src="LOGO_PATH" class="hidden md:block w-fit my-10" alt="logo" />
         <!-- Basket items-->
-        <div class="hidden md:block mb-4 font-bold">Your order</div>
+        <div class="hidden md:block mb-4 font-bold text-sm">Your order</div>
 
         <div class="max-h-90 h-90 overflow-y-auto">
             <ProductItem
@@ -103,7 +103,7 @@ const applyCoupon = async () => {
         </div>
 
         <!-- Coupons -->
-        <div class="mb-2">Coupon/Gift Card</div>
+        <div class="mb-2 font-bold text-sm">Coupon/Gift Card</div>
         <div class="flex">
             <InputText
                 v-model="coupon"
@@ -113,6 +113,7 @@ const applyCoupon = async () => {
             <Button
                 @click="applyCoupon"
                 :disabled="!coupon.length"
+                severity="secondary"
                 label="Confirm"
             />
         </div>
@@ -127,11 +128,11 @@ const applyCoupon = async () => {
 
         <!-- Summary-->
         <div class="mt-4">
-            <div class="mb-2 flex justify-between">
+            <div class="mb-2 flex justify-between text-xs">
                 <span>Subtotal: </span>
                 <span>{{ subTotal }}</span>
             </div>
-            <div class="mb-2 flex justify-between">
+            <div class="mb-2 flex justify-between text-xs">
                 <span>Sales tax: </span>
                 <span>{{ salesTax }}</span>
             </div>
@@ -143,7 +144,7 @@ const applyCoupon = async () => {
                     <span>- {{ formatCurrencyShort(couponAmount) }}</span>
                 </div>
             </div>
-            <div class="mb-2 flex justify-between">
+            <div class="mb-2 flex justify-between font-bold text-xl">
                 <span>Total price:</span>
                 <span>{{ total }}</span>
             </div>

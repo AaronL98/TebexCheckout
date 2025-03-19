@@ -7,11 +7,11 @@ import InputText from "primevue/inputtext";
     <img :src="LOGO_PATH" alt="Logo" class="mx-auto my-10" />
 
     <div
-        class="flex flex-col items-center w-10/12 md:w-7/12 border-1 border-primary p-8 mx-auto rounded-xs border-surface-800"
+        class="flex flex-col items-center w-10/12 md:w-6/12 border-1 border-primary p-8 mx-auto rounded-xs border-surface-800"
     >
         <img src="/public/img/success.svg" alt="Success" />
-        <span class="text-3xl font-bold mt-4">Order Complete</span>
-        <span class="text-lg mt-4 text-center">
+        <span class="text-3xl font-bold text-[26px] mt-4">Order Complete</span>
+        <span class="text-lg mt-4 text-center text-sm">
             Thank you for your payment. You will receive your purchased products
             shortly.
         </span>
