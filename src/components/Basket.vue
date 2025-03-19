@@ -3,6 +3,7 @@ import Product from "@/components/Product.vue";
 import { ref, computed } from "vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import Chip from "primevue/chip";
 import { formatCurrencyShort } from "@/helpers/formatCurrency";
 
 //TODO: Migrate this to vuex store
@@ -17,7 +18,15 @@ interface BasketCost {
 const basketCosts = computed<BasketCost[]>(() => [
     { label: "Subtotal:", price: 14.98 },
     { label: "Sales tax:", price: 3 },
-    { label: "Total price:", price: 17.98, class: "font-bold" },
+]);
+
+interface Discount {
+    label: string;
+    amount: number;
+}
+const discounts = computed<Discount[]>(() => [
+    { label: "25OFF", amount: 2 },
+    { label: "50OFF", amount: 3 },
 ]);
 </script>
 <template>
@@ -54,10 +63,25 @@ const basketCosts = computed<BasketCost[]>(() => [
         <div class="mt-4">
             <div
                 v-for="cost in basketCosts"
-                :class="`${cost.class} mb-2 flex justify-between`"
+                :class="`mb-2 flex justify-between`"
             >
                 <span>{{ cost.label }}</span>
                 <span>{{ formatCurrencyShort(cost.price) }}</span>
+            </div>
+            <div class="mb-2 flex flex-col">
+                <span class="mb-2">Discounts:</span>
+                <div
+                    v-for="discount in discounts"
+                    class="flex flex-row justify-between mb-2"
+                >
+                    <Chip :label="discount.label" />
+                    <!-- FIXME: support negatives in formatCurrency helpers-->
+                    <span>- {{ formatCurrencyShort(discount.amount) }}</span>
+                </div>
+            </div>
+            <div class="mb-2 flex justify-between">
+                <span>Total price:</span>
+                <span>$17.98</span>
             </div>
         </div>
     </div>
