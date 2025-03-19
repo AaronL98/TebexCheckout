@@ -29,7 +29,7 @@ const basketCosts = computed<BasketCost[]>(() => [
             alt="logo"
         />
         <!-- Basket items-->
-        <div class="hidden md:block mb-4">Your order</div>
+        <div class="hidden md:block mb-4 font-bold">Your order</div>
 
         <div class="max-h-90 h-90 overflow-y-auto">
             <Product

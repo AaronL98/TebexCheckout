@@ -13,13 +13,17 @@ const nameOnCard = ref<string>("");
 </script>
 
 <template>
-    <div class="md:w-6/12 h-full px-4 md:px-16">
+    <div class="md:w-6/12 h-full px-4 md:px-16 space-y-2">
         <!-- Logo: Mobile only -->
         <img
             src="/public/img/logo.svg"
             class="block md:invisible w-fit my-10"
             alt="logo"
         />
+        <div class="hidden md:block mb-4">
+            <span class="text-primary font-bold"> Make Payment </span>
+            <span>> Order Confirmed</span>
+        </div>
 
         <!-- Email-->
         <div>
@@ -28,7 +32,7 @@ const nameOnCard = ref<string>("");
                 v-model="email"
                 id="email"
                 placeholder="Enter your email address"
-                class="w-full mb-4"
+                class="w-full"
             />
         </div>
 
@@ -39,12 +43,12 @@ const nameOnCard = ref<string>("");
                 v-model="cardNumber"
                 id="cardNumber"
                 placeholder="1234 5678 9101 1121"
-                class="w-full mb-4"
+                class="w-full"
             />
         </div>
 
         <!-- Expiry, CVV, Zip -->
-        <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 space-y-2">
             <div class="col-span-1">
                 <label for="expiryDate"> Expiry date* </label>
                 <InputText
@@ -80,7 +84,7 @@ const nameOnCard = ref<string>("");
                 v-model="nameOnCard"
                 id="nameOnCard"
                 placeholder="John Doe"
-                class="w-full mb-4"
+                class="w-full"
             />
         </div>
 
