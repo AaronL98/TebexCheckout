@@ -27,7 +27,6 @@ Submission by Aaron
 | tailwindcss-primeui | Allows me to use PrimeVue's theme within Tailwind classes for consistency |
 | Zod | For form validation, and PrimeVue integrates into it directly for forms. |
 | Axios | For all API requests |
-| Axios | For all API requests |
 | vite-plugin-vue-devtools | Vue devtools, built right into the app. The browser extension is just too underperformant for larger apps. |
 | vue-router | To navigate between the checkout and order complete pages |
 
