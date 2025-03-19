@@ -1,26 +1,20 @@
 <script lang="ts" setup>
-import ProductItem from "@/components/ProductItem.vue";
-import { ref, computed, onMounted, watch } from "vue";
-import InputText from "primevue/inputtext";
+import { ref, computed, onMounted, watch, defineModel } from "vue";
+import axios from "axios";
 import Button from "primevue/button";
 import Chip from "primevue/chip";
+import InputText from "primevue/inputtext";
+import ProductItem from "@/components/ProductItem.vue";
 import { formatCurrencyShort } from "@/helpers/formatCurrency";
-import axios from "axios";
-
-import { Basket, Product } from "/api/apiTypes.ts";
-
-const BASKET_API_PATH: string = "/api/basket";
-const API_HEADERS = {
-    headers: {
-        "Content-Type": "application/json",
-    },
-};
-
-const LOGO_PATH: string = "/public/img/logo.svg";
+import { BasketInterface, ProductInterface } from "/api/apiTypes.ts";
+import { BASKET_API_PATH, API_HEADERS } from "@/constants/apiPaths.ts";
+import { LOGO_PATH } from "@/constants/logoPath.ts";
 
 //Basket fetched from API
-const basket = ref<Basket | null>(null);
-const products = computed<Product[]>(() => basket.value?.products || []);
+const basket = defineModel<BasketInterface | null>();
+const products = computed<ProductInterface[]>(
+    () => basket.value?.products || []
+);
 
 //Price summary
 const subTotal = computed<string>(() =>
@@ -53,7 +47,6 @@ const fetchBasket = async () => {
     const response = await axios
         .get(BASKET_API_PATH, API_HEADERS)
         .then((response) => {
-            console.log("Basket set to:", response.data);
             basket.value = response.data;
         })
         .catch(() => {
@@ -79,7 +72,6 @@ const applyCoupon = async () => {
         )
         .then((response) => {
             basket.value = response.data;
-            console.log("Coupon applied, basket set to:", response.data);
         })
         .catch((error) => {
             couponMessage.value = "Invalid coupon code";

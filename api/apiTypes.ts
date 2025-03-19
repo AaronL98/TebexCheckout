@@ -1,13 +1,13 @@
-export interface Basket {
+export interface BasketInterface {
     id: string;
-    products: Product[];
+    products: ProductInterface[];
     couponCode: string | null;
     subTotal: number;
     salesTax: number;
     total: number;
 }
 
-export interface Product {
+export interface ProductInterface {
     name: string;
     price: number;
     image: string;
