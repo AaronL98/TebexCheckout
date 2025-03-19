@@ -1,16 +1,23 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
-import InputText from "primevue/inputtext";
-import InputMask from "primevue/inputmask";
+import { z } from "zod";
+import { useRouter } from "vue-router";
+import axios from "axios";
 import Button from "primevue/button";
+import InputMask from "primevue/inputmask";
+import InputText from "primevue/inputtext";
 import Message from "primevue/message";
-import { BasketInterface } from "/api/apiTypes.ts";
-import { formatCurrencyShort } from "@/helpers/formatCurrency";
 import { Form } from "@primevue/forms";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
-import { z } from "zod";
+import { formatCurrencyShort } from "@/helpers/formatCurrency";
+import { BasketInterface } from "/api/apiTypes.ts";
+import { BASKET_API_PATH } from "@/constants/apiPaths.ts";
+import { LOGO_PATH } from "@/constants/logoPath.ts";
+
+const router = useRouter();
 
 interface Props {
+    id: BasketInterface["id"];
     total: BasketInterface["total"] | null;
 }
 const props = defineProps<Props>();
@@ -18,9 +25,9 @@ const props = defineProps<Props>();
 const initialValues = reactive({
     email: "",
     cardNumber: null,
-    expiryDate: "",
-    cvv: null,
-    zipPostalCode: "",
+    cardExpiry: "",
+    cardCvc: null,
+    postalCode: "",
     nameOnCard: "",
 });
 
@@ -40,10 +47,10 @@ const resolver = ref(
                         message: "Card number must contain only digits",
                     }
                 ),
-            expiryDate: z.string().length(5, {
+            cardExpiry: z.string().length(5, {
                 message: "Invalid expiry date",
             }),
-            cvv: z
+            cardCvc: z
                 .string({ message: "Please provide a CVV/CVC" })
                 .length(3, { message: "Invalid CVV/CVC" })
                 .refine(
@@ -51,7 +58,7 @@ const resolver = ref(
                         val.split("").every((char) => !isNaN(Number(char))),
                     { message: "CVV/CVC must contain only digits" }
                 ),
-            zipPostalCode: z
+            postalCode: z
                 .string() //US format: upto 5 chars, UK: Up to 7 (8 including a space)
                 .min(5, { message: "Zip/postal code is too short" })
                 .max(8, { message: "Zip/postal code is too long" }),
@@ -62,8 +69,26 @@ const resolver = ref(
     )
 );
 
-const onFormSubmit = ({ valid }) => {
-    console.log("Form submitted", valid);
+const paymentFailed = ref<boolean>(false);
+
+const submitPayment = async ({ valid, values }) => {
+    if (!valid) return;
+
+    const response = await axios
+        .post(`${BASKET_API_PATH}/${props.id}/checkout`, values)
+        .then((response) => {
+            if (response.data?.success) {
+                const transactionId = response.data.transactionId;
+                router.push({
+                    name: "Complete",
+                    params: { transactionId },
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Failed to submit payment", error);
+            paymentFailed.value = true;
+        });
 };
 </script>
 
@@ -71,7 +96,7 @@ const onFormSubmit = ({ valid }) => {
     <div class="md:w-6/12 w-full h-full px-4 md:px-16 space-y-2">
         <!-- Logo: Mobile only -->
         <img
-            src="/public/img/logo.svg"
+            :src="LOGO_PATH"
             class="block md:invisible w-fit my-10"
             alt="logo"
         />
@@ -82,7 +107,7 @@ const onFormSubmit = ({ valid }) => {
 
         <Form
             v-slot="$form"
-            @submit="onFormSubmit"
+            @submit="submitPayment"
             :initialValues="initialValues"
             :resolver="resolver"
             class="my-class"
@@ -135,63 +160,64 @@ const onFormSubmit = ({ valid }) => {
             <!-- Expiry, CVV, Zip -->
             <div class="grid grid-cols-2 xl:grid-cols-4 gap-x-2">
                 <div class="col-span-1">
-                    <label for="expiryDate"> Expiry date* </label>
+                    <label for="cardExpiry"> Expiry date* </label>
                     <InputMask
-                        name="expiryDate"
-                        id="expiryDate"
+                        name="cardExpiry"
+                        id="cardExpiry"
                         placeholder="MM/YY"
                         class="w-full"
                         mask="99/99"
                     />
                     <Message
-                        :class="{ invisible: !$form.expiryDate?.invalid }"
+                        :class="{ invisible: !$form.cardExpiry?.invalid }"
                         severity="error"
                         size="small"
                         variant="simple"
                     >
                         {{
-                            $form.expiryDate?.error?.message ||
+                            $form.cardExpiry?.error?.message ||
                             "Form validation error"
                         }}
                     </Message>
                 </div>
                 <div class="col-span-1">
-                    <label for="cvv"> CVC/CVV* </label>
+                    <label for="cardCvc"> CVC/CVV* </label>
                     <InputText
-                        name="cvv"
-                        id="cvv"
+                        name="cardCvc"
+                        id="cardCvc"
                         placeholder="123"
                         class="w-full"
                         inputmode="number"
                     />
                     <Message
-                        :class="{ invisible: !$form.cvv?.invalid }"
+                        :class="{ invisible: !$form.cardCvc?.invalid }"
                         severity="error"
                         size="small"
                         variant="simple"
                     >
                         {{
-                            $form.cvv?.error?.message || "Form validation error"
+                            $form.cardCvc?.error?.message ||
+                            "Form validation error"
                         }}
                     </Message>
                 </div>
                 <div class="col-span-2">
-                    <label for="zipPostalCode"> Zip/Postal code* </label>
+                    <label for="postalCode"> Zip/Postal code* </label>
                     <InputText
-                        name="zipPostalCode"
-                        id="zipPostalCode"
+                        name="postalCode"
+                        id="postalCode"
                         placeholder="12345"
                         class="w-full"
                         inputmode="text"
                     />
                     <Message
-                        :class="{ invisible: !$form.zipPostalCode?.invalid }"
+                        :class="{ invisible: !$form.postalCode?.invalid }"
                         severity="error"
                         size="small"
                         variant="simple"
                     >
                         {{
-                            $form.zipPostalCode?.error?.message ||
+                            $form.postalCode?.error?.message ||
                             "Form validation error"
                         }}
                     </Message>
@@ -226,5 +252,9 @@ const onFormSubmit = ({ valid }) => {
                 class="w-full"
             />
         </Form>
+
+        <Message v-if="paymentFailed" class="mt-4" severity="error"
+            >There was an issue submitting your payment
+        </Message>
     </div>
 </template>
