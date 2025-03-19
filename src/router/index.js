@@ -12,7 +12,7 @@ const routes = [
         path: "/complete/:transactionId",
         name: "Complete",
         component: OrderComplete,
-        props: true,
+        props: true
     },
 ];
 

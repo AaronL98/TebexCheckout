@@ -18,10 +18,10 @@ const imagePath = computed<string>(() => `/public/img/products/${props.image}`);
     <div class="flex pb-4 items-center">
         <img :src="imagePath" alt="Product image" />
         <div class="flex flex-col pl-2">
-            <span>{{ name }}</span>
-            <span>Qty: {{ quantity }}</span>
+            <span class="text-sm">{{ name }}</span>
+            <span class="text-xs">Qty: {{ quantity }}</span>
         </div>
 
-        <span class="ml-auto">{{ formatCurrency(price) }} </span>
+        <span class="ml-auto text-xs">{{ formatCurrency(price) }} </span>
     </div>
 </template>
