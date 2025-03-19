@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import ProductItem from "@/components/ProductItem.vue";
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, defineModel } from "vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Chip from "primevue/chip";
 import { formatCurrencyShort } from "@/helpers/formatCurrency";
 import axios from "axios";
 
-import { Basket, Product } from "/api/apiTypes.ts";
+import { BasketInterface, ProductInterface } from "/api/apiTypes.ts";
 
+const LOGO_PATH: string = "/public/img/logo.svg";
 const BASKET_API_PATH: string = "/api/basket";
 const API_HEADERS = {
     headers: {
@@ -16,11 +17,11 @@ const API_HEADERS = {
     },
 };
 
-const LOGO_PATH: string = "/public/img/logo.svg";
-
 //Basket fetched from API
-const basket = ref<Basket | null>(null);
-const products = computed<Product[]>(() => basket.value?.products || []);
+const basket = defineModel<BasketInterface | null>();
+const products = computed<ProductInterface[]>(
+    () => basket.value?.products || []
+);
 
 //Price summary
 const subTotal = computed<string>(() =>
