@@ -5,8 +5,17 @@ Submission by Aaron
 ## Screenshots
 
 ### Desktop
+![image](https://github.com/user-attachments/assets/03879a2a-c886-426a-93c0-f4f85a2f3478)
+
+![image](https://github.com/user-attachments/assets/aa43741d-58f1-4349-9994-0229f826486f)
+
+### Tablet
+![image](https://github.com/user-attachments/assets/9cf7cf85-edb0-4354-b05b-79380e1b12ff)
 
 ### Mobile
+![image](https://github.com/user-attachments/assets/1362c6bd-5776-4c81-9176-e52a984d45c2)
+![image](https://github.com/user-attachments/assets/d9c423ef-0978-47e4-9d7a-9fe10d2f4333)
+
 
 ## Tools used
 
@@ -52,3 +61,4 @@ npm run test:unit
 
 - I feel it would have been nice if the coupon endpoint also returned the actual discount value that it applied, as I had to work this out within a computed in the component itself.
 - The success icon on the order confirm page was not in the assets, I had to export it from Figma.
+- I thought a floating basket button with a bottom drawer would be appropriate for showing the basket on mobile
