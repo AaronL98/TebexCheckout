@@ -4,6 +4,7 @@ import axios from "axios";
 import Button from "primevue/button";
 import Chip from "primevue/chip";
 import InputText from "primevue/inputtext";
+import Message from "primevue/message";
 import ProductItem from "@/components/ProductItem.vue";
 import { formatCurrencyShort } from "@/helpers/formatCurrency";
 import { BasketInterface, ProductInterface } from "/api/apiTypes.ts";
@@ -29,16 +30,6 @@ const total = computed<string>(() =>
     formatCurrencyShort(basket.value?.total || 0)
 );
 
-//TODO: Hook upto API
-interface Discount {
-    label: string;
-    amount: number;
-}
-const discounts = computed<Discount[]>(() => [
-    { label: "25OFF", amount: 2 },
-    { label: "50OFF", amount: 3 },
-]);
-
 onMounted(async () => {
     await fetchBasket();
 });
@@ -55,13 +46,28 @@ const fetchBasket = async () => {
 };
 
 const coupon = ref<string>("");
-const couponMessage = ref<string>("");
+const couponInvalid = ref<boolean>(false);
 watch(
     () => coupon.value,
     () => {
-        couponMessage.value = "";
+        couponInvalid.value = false;
     }
 );
+
+const couponAmount = computed<number>(() => {
+    // If basket.value.couponCode, then we have a discount
+    if (!basket.value?.couponCode) return 0;
+
+    // The coupon endpoint does not return the discount amount, so it has to be calculated
+
+    // The discount is cost of all products in basket - subTotal
+    let basketRunningTotal = 0;
+    basket.value.products.forEach((product) => {
+        basketRunningTotal += product.price * product.quantity;
+    });
+
+    return basketRunningTotal - basket.value.subTotal;
+});
 
 const applyCoupon = async () => {
     const response = await axios
@@ -74,7 +80,7 @@ const applyCoupon = async () => {
             basket.value = response.data;
         })
         .catch((error) => {
-            couponMessage.value = "Invalid coupon code";
+            couponInvalid.value = true;
         });
 };
 </script>
@@ -110,7 +116,14 @@ const applyCoupon = async () => {
                 label="Confirm"
             />
         </div>
-        <span class="text-red-400">{{ couponMessage }}</span>
+        <Message
+            :class="{ invisible: !couponInvalid }"
+            severity="error"
+            size="small"
+            variant="simple"
+        >
+            Coupon code is invalid
+        </Message>
 
         <!-- Summary-->
         <div class="mt-4">
@@ -123,15 +136,11 @@ const applyCoupon = async () => {
                 <span>{{ salesTax }}</span>
             </div>
 
-            <div v-if="false" class="mb-2 flex flex-col">
+            <div v-if="basket?.couponCode" class="mb-2 flex flex-col">
                 <span class="mb-2">Discounts:</span>
-                <div
-                    v-for="discount in discounts"
-                    class="flex flex-row justify-between mb-2"
-                >
-                    <Chip :label="discount.label" />
-                    <!-- FIXME: support negatives in formatCurrency helpers-->
-                    <span>- {{ formatCurrencyShort(discount.amount) }}</span>
+                <div class="flex flex-row justify-between mb-2">
+                    <Chip :label="basket.couponCode" />
+                    <span>- {{ formatCurrencyShort(couponAmount) }}</span>
                 </div>
             </div>
             <div class="mb-2 flex justify-between">
