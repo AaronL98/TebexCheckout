@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-screen overflow-hidden">
         <Basket v-model="basket" class="hidden md:flex" />
-        <PaymentForm />
+        <PaymentForm :total="basket?.total" />
 
         <Drawer
             v-model:visible="visible"
