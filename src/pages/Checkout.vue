@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-screen overflow-hidden">
         <Basket v-model="basket" class="hidden md:flex" />
-        <PaymentForm :total="basket?.total" />
+        <PaymentForm :id="basket?.id" :total="basket?.total" />
 
         <Drawer
             v-model:visible="visible"
@@ -34,7 +34,6 @@ import PaymentForm from "@/components/PaymentForm.vue";
 import Drawer from "primevue/drawer";
 import Button from "primevue/button";
 import OverlayBadge from "primevue/overlaybadge";
-
 import { BasketInterface } from "/api/apiTypes.ts";
 
 const visible = ref<boolean>(false);
